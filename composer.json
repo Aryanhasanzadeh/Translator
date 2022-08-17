@@ -1,0 +1,28 @@
+{
+    "name": "arh/translator",
+    "description": "this package help to manage translator server and translate data",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aryan Hasanzadeh",
+            "email": "aryanhasanzadeh75@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "stichoza/google-translate-php": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ARH\\Translator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ARH\\Translator\\TranslatorServiceProvider"
+            ]
+        }
+    }
+}
