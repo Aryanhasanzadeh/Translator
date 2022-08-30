@@ -1,9 +1,9 @@
 <?php
 
 
-namespace ARH\Translator\Traits;
+namespace Aryanhasanzadeh\Translator\App\Http\Traits;
 
-use ARH\Translator\Models\Translate;
+use Aryanhasanzadeh\Translator\Models\Translate;
 
 /**
  * 

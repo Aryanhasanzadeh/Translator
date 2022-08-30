@@ -1,10 +1,12 @@
 <?php
 
-namespace ARH\Translator\repository;
+namespace Aryanhasanzadeh\Translator\App\Models\Repository;
 
+use Aryanhasanzadeh\Translator\App\Models\Translate;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use ARH\Translator\SingleTon\GetTranslator;
+use Aryanhasanzadeh\Translator\Helper\SingleTon\GetTranslator;
+use Illuminate\Http\Request;
 
 class TranslateRepository{
 
@@ -14,6 +16,7 @@ class TranslateRepository{
     protected $parent;
     protected $translate=null;
     protected $useTranslator=false;
+    protected Translate $translateModel;
 
 
     protected function checkLocaleArray()
@@ -64,6 +67,12 @@ class TranslateRepository{
         $this->useTranslator=$useTranslator;
         return $this;
     }
+
+    public function setTranslate(Translate $translate)
+    {
+        $this->translateModel=$translate;
+        return $this;
+    }
     
 
     private function updateOrInsert()
@@ -87,6 +96,44 @@ class TranslateRepository{
                 'data'=>$this->translate
             ]
         );
+    }
+
+    public function get(Request $request)
+    {
+        return Translate::latest()->paginate();
+    }
+
+    
+
+    public function update(String $data)
+    {
+        $this->checkTranslatorModel();
+
+        $this->translateModel->update([
+            'data' => $data
+        ]);
+        return $this;
+    }
+
+    public function delete()
+    {
+        $this->checkTranslatorModel();
+
+        $this->translateModel->delete();
+    }
+
+    public function getTranslateModel()
+    {
+        $this->checkTranslatorModel();
+        return $this->translateModel;
+    }
+
+
+    private function checkTranslatorModel()
+    {
+        if(!$this->translateModel instanceof Translate){
+            throw new Exception("Translate model not set", 1);
+        }
     }
 
 }

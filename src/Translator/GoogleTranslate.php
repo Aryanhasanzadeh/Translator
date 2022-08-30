@@ -1,11 +1,12 @@
 <?php
 
-namespace ARH\Translator\Translator;
+namespace Aryanhasanzadeh\Translator\Translator;
 
-
+use Aryanhasanzadeh\Translator\App\Http\Interface\TranslatorServer;
 use Stichoza\GoogleTranslate\GoogleTranslate as GT;
 
-class GoogleTranslate{
+
+class GoogleTranslate implements TranslatorServer {
 
 
     protected $tr; 
@@ -18,7 +19,7 @@ class GoogleTranslate{
 
     public function setSource(String $src)
     {
-        $this->tr->setSource(!empty($src) ? $src :null);
+        $this->tr->setSource(!empty($src) ? $src : '');
         return $this;
     }
     

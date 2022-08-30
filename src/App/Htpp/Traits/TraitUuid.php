@@ -1,6 +1,6 @@
 <?php
 
-namespace ARH\Translator\Traits;
+namespace Aryanhasanzadeh\Translator\App\Http\Traits;
 
 use Illuminate\Support\Str;
 /**

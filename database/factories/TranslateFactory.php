@@ -1,9 +1,9 @@
 <?php
 
-namespace ARH\Translator\database\factories;
+namespace Aryanhasanzadeh\Translator\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use ARH\Translator\Models\Translate;
+use Aryanhasanzadeh\Translator\Models\Translate;
 
 class TranslateFactory extends Factory
 {

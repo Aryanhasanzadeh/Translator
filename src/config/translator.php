@@ -11,4 +11,17 @@ return [
         'title','body'
     ],
     'user-translator'=>true,
+
+
+    // base prefix 
+    'prefix' => 'api',
+
+    // base middleware
+    'middleware' => ['auth:sanctum'],
+
+    // translator api's prefix
+    'translator_prefix' => 'translators',
+
+    // translator api's middleware
+    'translator_middleware' => [],
 ];

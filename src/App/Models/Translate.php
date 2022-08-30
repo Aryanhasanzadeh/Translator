@@ -1,18 +1,16 @@
 <?php
 
-namespace ARH\Translator\Models;
+namespace Aryanhasanzadeh\Translator\App\Models;
 
-use App\Utility\Traits\DateConvertor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use ARH\Translator\database\factories\TranslateFactory;
-use ARH\Translator\Traits\TraitUuid;
+use Aryanhasanzadeh\Translator\database\factories\TranslateFactory;
+use Aryanhasanzadeh\Translator\App\Http\Traits\TraitUuid;
 
 class Translate extends Model
 {
     use HasFactory;
     use TraitUuid;
-    use DateConvertor;
 
     protected static function newFactory()
     {

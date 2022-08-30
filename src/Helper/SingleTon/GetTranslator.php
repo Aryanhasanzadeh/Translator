@@ -1,8 +1,8 @@
 <?php
 
-namespace ARH\Translator\SingleTon;
+namespace Aryanhasanzadeh\Translator\Helper\SingleTon;
 
-use ARH\Translator\Factory\TranslatorFactory;
+use Aryanhasanzadeh\Translator\Helper\Factory\TranslatorFactory;
 
 class GetTranslator {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ARH\Translator\Resources;
+namespace Aryanhasanzadeh\Translator\App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,12 +26,12 @@ class TranslateResource extends JsonResource
             '_id'=>$this->id,
             'lang'=>$this->lang,
             'type'=>[
-                '_code'=>intval($this->type),
-                'Name'=>$this->type == 0 ? "title" : "body",
+                '_'=>intval($this->type),
+                'name'=>$this->type == 0 ? "title" : "body",
             ],
             'data'=>$this->data,
-            'created_at'=>$this->getCreatedAt($this->loc),
-            'updated_at'=>$this->getUpdatedAt($this->loc),
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
         ];
     }
 }

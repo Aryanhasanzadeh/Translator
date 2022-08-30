@@ -1,9 +1,9 @@
 <?php
 
-namespace ARH\Translator\Factory;
+namespace Aryanhasanzadeh\Translator\Helper\Factory;
 
-use ARH\Translator\SingleTon\GetTranslator;
-use ARH\Translator\Translator\GoogleTranslate;
+use Aryanhasanzadeh\Translator\Helper\SingleTon\GetTranslator;
+use Aryanhasanzadeh\Translator\Translator\GoogleTranslate;
 use Exception;
 
 

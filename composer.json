@@ -1,6 +1,6 @@
 {
-    "name": "arh/translator",
-    "description": "this package help to manage translator server and translate data",
+    "name": "aryanhasanzadeh/translator",
+    "description": "This Package Help to Manage Translator Server and Translate data for Laravel Projects",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -11,17 +11,19 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "stichoza/google-translate-php": "^4.1"
+        "php": ">=7.4",
+        "stichoza/google-translate-php": "^4.*"
     },
     "autoload": {
         "psr-4": {
-            "ARH\\Translator\\": "src/"
+            "Aryanhasanzadeh\\Translator\\": "src/",
+            "Aryanhasanzadeh\\Translator\\Database\\Factories": "database/factories"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "ARH\\Translator\\TranslatorServiceProvider"
+                "Aryanhasanzadeh\\Translator\\Providers\\TranslatorServiceProvider"
             ]
         }
     }
