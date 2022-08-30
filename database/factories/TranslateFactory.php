@@ -1,6 +1,7 @@
 <?php
 
-namespace Aryanhasanzadeh\Translator\database\factories;
+namespace Aryanhasanzadeh\Translator\Database\Factories;
+
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Aryanhasanzadeh\Translator\Models\Translate;

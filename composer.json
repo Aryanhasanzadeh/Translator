@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.4",
-        "stichoza/google-translate-php": "^4.*"
+        "stichoza/google-translate-php": "^4.1"
     },
     "autoload": {
         "psr-4": {
