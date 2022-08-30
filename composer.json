@@ -17,7 +17,7 @@
     "autoload": {
         "psr-4": {
             "Aryanhasanzadeh\\Translator\\": "src/",
-            "Aryanhasanzadeh\\Translator\\Database\\Factories": "database/factories"
+            "Aryanhasanzadeh\\Translator\\Database\\Factories\\": "database/factories"
         }
     },
     "extra": {
