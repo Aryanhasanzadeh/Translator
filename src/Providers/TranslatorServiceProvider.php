@@ -1,6 +1,6 @@
 <?php
 
-namespace Aryanhasanzadeh\Translator;
+namespace Aryanhasanzadeh\Translator\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
