@@ -7,6 +7,10 @@ use Aryanhasanzadeh\Translator\App\Models\Repository\TranslateRepository;
 use Aryanhasanzadeh\Translator\App\Models\Translate;
 use Illuminate\Http\Request;
 
+/**
+ * @group Translator
+*/
+
 class TranslatorController extends ApiController
 {
 
@@ -18,10 +22,9 @@ class TranslatorController extends ApiController
     }
 
     /**
-     * Display a listing of the Translate.
-     *
-     * @return \Illuminate\Http\Response
-     */
+     * get list of Translate
+     * 
+    */
     public function index(Request $request)
     {
         $this->validate($request,[
@@ -40,11 +43,10 @@ class TranslatorController extends ApiController
 
 
     /**
-     * Display the specified Translate.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+     * get specified Translate
+     * 
+     * @urlParam id required the id of the translate
+    */
     public function show(Translate $translate)
     {
         try {
@@ -58,12 +60,12 @@ class TranslatorController extends ApiController
     }
 
     /**
-     * Update the specified Translate in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+     * Update the Specified Translate
+     * 
+     * @urlParam id required the id of the translate
+     * 
+     * @bodyParam data string required New text  to be replaced. Example: new text
+    */
     public function update(Request $request,Translate $translate)
     {
         $this->validate($request,[
@@ -82,11 +84,12 @@ class TranslatorController extends ApiController
     }
 
     /**
-     * Remove the specified Translate from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+     * Remove the specified translate
+     * 
+     * 
+     * @urlParam id integer required The ID of the translate
+     * 
+    */
     public function destroy(Translate $translate)
     {
         try {

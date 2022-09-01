@@ -10,7 +10,12 @@ return [
     'types'=>[
         'title','body'
     ],
+
+    // if true auto translate data
     'user-translator'=>true,
+
+    // if true add base api to api route
+    'use_base_api'=>true,
 
 
     // base prefix 
