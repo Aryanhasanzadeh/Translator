@@ -18,6 +18,10 @@ return [
     'use_base_api'=>true,
 
 
+    //max char size of update api validation
+    'base_api_max_char_size'=>400,
+
+
     // base prefix 
     'prefix' => 'api',
 

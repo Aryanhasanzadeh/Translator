@@ -69,7 +69,7 @@ class TranslatorController extends ApiController
     public function update(Request $request,Translate $translate)
     {
         $this->validate($request,[
-            'data' => 'required|string|max:4000000000',
+            'data' => 'required|string|max:'.config('Translator.base_api_max_char_size'),
         ]);
 
         try {
