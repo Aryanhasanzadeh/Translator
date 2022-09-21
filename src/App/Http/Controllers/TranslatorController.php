@@ -32,7 +32,7 @@ class TranslatorController extends ApiController
         ]);
 
         try {
-            $this->errorResponse([
+            $this->successResponse([
                 'translators'=>TranslateResource::collection($this->transRepo->get($request))
             ]);
         } catch (\Throwable $th) {
@@ -50,7 +50,7 @@ class TranslatorController extends ApiController
     public function show(Translate $translate)
     {
         try {
-            $this->errorResponse([
+            $this->successResponse([
                 'translate'=>TranslateResource::make($translate)
             ]);
         } catch (\Throwable $th) {
@@ -73,7 +73,7 @@ class TranslatorController extends ApiController
         ]);
 
         try {
-            $this->errorResponse([
+            $this->successResponse([
                 'translate'=>TranslateResource::make($this->transRepo->setTranslate($translate)->update($request->data)->getTranslateModel())
             ]);
 
@@ -96,7 +96,7 @@ class TranslatorController extends ApiController
 
             $this->transRepo->setTranslate($translate)->delete();
 
-            $this->errorResponse([
+            $this->successResponse([
             ],400,'item delete successfully');
         } catch (\Throwable $th) {
             //throw $th;

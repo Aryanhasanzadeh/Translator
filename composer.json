@@ -17,11 +17,12 @@
         "stichoza/google-translate-php": "^4.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "~8.0 || ^9.0",
+        "phpunit/phpunit": "10.0.x-dev",
         "knuckleswtf/scribe": "^3.36"
     },
     "autoload": {
         "psr-4": {
+            "Aryanhasanzadeh\\Translator\\Tests\\": "tests/",
             "Aryanhasanzadeh\\Translator\\": "src/",
             "Aryanhasanzadeh\\Translator\\Database\\Factories\\": "database/factories"
         }
