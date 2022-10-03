@@ -4,7 +4,7 @@ namespace Aryanhasanzadeh\Translator\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Aryanhasanzadeh\Translator\database\factories\TranslateFactory;
+use Aryanhasanzadeh\Translator\Database\Factories\TranslateFactory;
 use Aryanhasanzadeh\Translator\App\Http\Traits\TraitUuid;
 
 class Translate extends Model

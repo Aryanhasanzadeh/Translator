@@ -2,10 +2,10 @@
 
 namespace Aryanhasanzadeh\Translator\App\Models\Repository;
 
+use Aryanhasanzadeh\Translator\App\Jobs\DoTranslateJob;
 use Aryanhasanzadeh\Translator\App\Models\Translate;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Aryanhasanzadeh\Translator\Helper\SingleTon\GetTranslator;
 use Illuminate\Http\Request;
 
 class TranslateRepository{
@@ -21,7 +21,7 @@ class TranslateRepository{
 
     protected function checkLocaleArray()
     {
-        if(!is_array(config('translator.fallback_locale'))){
+        if(!is_array(config('Translator.fallback_locale'))){
             throw new Exception("Fallback Locale not set as Array", 1);
         }
     }
@@ -55,9 +55,23 @@ class TranslateRepository{
     {
         $this->checkLocaleArray();
 
-        foreach (config('translator.fallback_locale') as $lang) {
-            $this->lang=$lang;
-            $this->setLang($lang)->updateOrInsert();
+        if(!$this->parent instanceof Model){
+            throw new Exception("parent not set", 1);
+        }
+
+        if (!$this->useTranslator) {
+            $x = $this->parent->translate()->updateOrCreate(
+                [
+                    'lang'=>$this->lang,
+                    'type'=>$this->type,
+                    'data'=>$this->data
+                ]
+            );
+
+        }else{
+            foreach (config('Translator.fallback_locale') as $lang) {
+                dispatch((new DoTranslateJob($lang,$this->data,$this->type,$this->parent))->delay(2));
+            }
         }
         return ;
     }
@@ -75,28 +89,6 @@ class TranslateRepository{
     }
     
 
-    private function updateOrInsert()
-    {
-        if ($this->useTranslator) {
-            $tr=GetTranslator::getInstance(config('translator.active_server'));
-            $this->translate=$tr->setTarget($this->lang)->getTranslate($this->data);
-        }else{
-            $this->translate=$this->data;
-        }
-
-        if(!$this->parent instanceof Model){
-            throw new Exception("parent not set", 1);
-        }
-
-
-        return $this->parent->translate()->updateOrCreate(
-            [
-                'lang'=>$this->lang,
-                'type'=>$this->type,
-                'data'=>$this->translate
-            ]
-        );
-    }
 
     public function get(Request $request)
     {

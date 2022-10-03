@@ -3,7 +3,7 @@
 
 namespace Aryanhasanzadeh\Translator\App\Http\Traits;
 
-use Aryanhasanzadeh\Translator\Models\Translate;
+use Aryanhasanzadeh\Translator\App\Models\Translate;
 
 /**
  * 
