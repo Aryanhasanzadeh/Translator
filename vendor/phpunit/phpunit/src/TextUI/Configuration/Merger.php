@@ -31,6 +31,11 @@ use SebastianBergmann\Environment\Console;
  */
 final class Merger
 {
+    /**
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws NoCustomCssFileException
+     */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
         $bootstrap = null;
@@ -620,6 +625,12 @@ final class Merger
 
         $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
 
+        $testSuite = null;
+
+        if ($cliConfiguration->hasTestSuite()) {
+            $testSuite = $cliConfiguration->testSuite();
+        }
+
         return new Configuration(
             $configurationFile,
             $bootstrap,
@@ -713,6 +724,7 @@ final class Merger
             $includePath,
             $randomOrderSeed,
             $includeUncoveredFiles,
+            $testSuite,
             $xmlValidationErrors,
         );
     }

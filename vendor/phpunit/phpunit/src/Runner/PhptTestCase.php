@@ -43,6 +43,7 @@ use function var_export;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\Throwable as EventThrowable;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -55,8 +56,12 @@ use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
+use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
+use SebastianBergmann\CodeCoverage\TestIdMissingException;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Template\Template;
 use Throwable;
 
@@ -95,9 +100,15 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \SebastianBergmann\CodeCoverage\ReflectionException
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws StaticAnalysisCacheNotConfiguredException
+     * @throws TestIdMissingException
+     * @throws UnintentionallyCoveredCodeException
      *
      * @noinspection RepetitiveMethodCallsInspection
      */
@@ -570,6 +581,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         ];
     }
 
+    /**
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
+     */
     private function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory): void
     {
         $files = $this->getCoverageFiles();

@@ -27,6 +27,7 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -41,8 +42,8 @@ use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
 
 /**
@@ -86,16 +87,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public static function fromClassName(string $className): static
     {
-        try {
-            $class = new ReflectionClass($className);
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        assert(class_exists($className));
+
+        $class = new ReflectionClass($className);
 
         return static::fromClassReflector($class);
     }
@@ -313,8 +307,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
+     * @throws Event\RuntimeException
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws UnintentionallyCoveredCodeException
      */
     public function run(): void
     {
@@ -545,6 +542,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @throws Event\MoreThanOneDataSetFromDataProviderException
      * @throws Exception
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
@@ -641,6 +639,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     private function throwableToString(Throwable $t): string
     {
         $message = $t->getMessage();

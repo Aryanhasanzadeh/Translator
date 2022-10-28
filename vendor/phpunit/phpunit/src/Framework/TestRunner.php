@@ -24,6 +24,9 @@ use function unlink;
 use function var_export;
 use AssertionError;
 use PHPUnit\Event;
+use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
@@ -34,6 +37,7 @@ use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
+use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
@@ -54,8 +58,11 @@ final class TestRunner
     }
 
     /**
+     * @throws \PHPUnit\Runner\Exception
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws CodeCoverageException
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoDataSetFromDataProviderException
      * @throws UnintentionallyCoveredCodeException
      */
     public function run(TestCase $test): void
@@ -235,6 +242,16 @@ final class TestRunner
         }
     }
 
+    /**
+     * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\Util\Exception
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
+     * @throws ProcessIsolationException
+     * @throws StaticAnalysisCacheNotConfiguredException
+     */
     public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
     {
         $class = new ReflectionClass($test);

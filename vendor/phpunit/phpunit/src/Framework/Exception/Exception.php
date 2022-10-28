@@ -42,7 +42,7 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
 {
     protected array $serializableTrace;
 
-    public function __construct($message = '', $code = 0, Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
@@ -53,6 +53,9 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function __toString(): string
     {
         $string = ThrowableToStringMapper::map($this);

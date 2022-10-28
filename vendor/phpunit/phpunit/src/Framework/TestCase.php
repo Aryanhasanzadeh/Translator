@@ -53,6 +53,9 @@ use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
+use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\MessageIsOrContains;
@@ -86,6 +89,8 @@ use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
+use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -417,9 +422,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws CodeCoverageException
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
+     * @throws ProcessIsolationException
+     * @throws StaticAnalysisCacheNotConfiguredException
+     * @throws UnintentionallyCoveredCodeException
      */
     final public function run(): void
     {
@@ -956,6 +970,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     *
+     * @throws MoreThanOneDataSetFromDataProviderException
      */
     final public function valueObjectForEvents(): Event\Code\TestMethod
     {
@@ -1075,6 +1091,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return Stub&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     protected function createStub(string $originalClassName): Stub
     {
@@ -1093,6 +1113,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     protected function createMock(string $originalClassName): MockObject
     {
@@ -1111,6 +1135,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
@@ -1133,6 +1161,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
@@ -1160,6 +1191,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
@@ -1186,6 +1220,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
@@ -1215,6 +1252,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
@@ -1264,6 +1303,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * `$mockedMethods` parameter.
      *
      * @psalm-param trait-string $traitName
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
@@ -1289,6 +1331,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates an object that uses the specified trait.
      *
      * @psalm-param trait-string $traitName
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
@@ -1417,6 +1461,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return true;
     }
 
+    /**
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
+     */
     private function markErrorForInvalidDependency(?ExecutionOrderDependency $dependency = null): void
     {
         $message = 'This test has an invalid dependency';
@@ -1438,6 +1487,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::error($message);
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
@@ -1473,6 +1525,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBufferingLevel  = ob_get_level();
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function stopOutputBuffering(): bool
     {
         if (ob_get_level() !== $this->outputBufferingLevel) {
@@ -1512,6 +1567,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->snapshot = $snapshot;
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function restoreGlobalState(): void
     {
         if (!$this->snapshot instanceof Snapshot) {
@@ -1576,6 +1634,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals;
@@ -1603,6 +1664,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
@@ -1782,6 +1846,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     private function createMockObject(string $originalClassName, bool $register = true): MockObject
     {
@@ -1794,7 +1862,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @throws Exception
      * @throws ExpectationFailedException
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
      */
     private function performAssertionsOnOutput(): void
     {
@@ -1877,6 +1948,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @psalm-param list<non-empty-string> $hookMethods
      * @psalm-param 'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPreConditionCalled'|'testPostConditionCalled'|'testAfterTestMethodCalled'|'testAfterLastTestMethodCalled' $calledMethod
      * @psalm-param 'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPreConditionFinished'|'testPostConditionFinished'|'testAfterTestMethodFinished'|'testAfterLastTestMethodFinished' $finishedMethod
      */
@@ -1920,6 +1992,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 
+    /**
+     * @throws ExpectationFailedException
+     */
     private function verifyExceptionExpectations(Throwable|\Exception $exception): void
     {
         if ($this->expectedException !== null) {

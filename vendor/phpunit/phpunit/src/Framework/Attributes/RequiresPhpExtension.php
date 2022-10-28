@@ -19,25 +19,37 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequiresPhpExtension
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $extension;
+
+    /**
+     * @psalm-var null|non-empty-string
+     */
     private readonly ?string $versionRequirement;
 
+    /**
+     * @psalm-param non-empty-string $extension
+     * @psalm-param null|non-empty-string $versionRequirement
+     */
     public function __construct(string $extension, ?string $versionRequirement = null)
     {
         $this->extension          = $extension;
         $this->versionRequirement = $versionRequirement;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function extension(): string
     {
         return $this->extension;
     }
 
-    public function hasVersionRequirement(): bool
-    {
-        return $this->versionRequirement !== null;
-    }
-
+    /**
+     * @psalm-return null|non-empty-string
+     */
     public function versionRequirement(): ?string
     {
         return $this->versionRequirement;

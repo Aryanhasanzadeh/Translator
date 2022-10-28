@@ -189,6 +189,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setRows(array $rows)
     {
         $this->rows = [];
@@ -617,7 +620,7 @@ class Table
                 if (!str_contains($cell ?? '', "\n")) {
                     continue;
                 }
-                $escaped = implode("\n", array_map([OutputFormatter::class, 'escapeTrailingBackslash'], explode("\n", $cell)));
+                $escaped = implode("\n", array_map(OutputFormatter::escapeTrailingBackslash(...), explode("\n", $cell)));
                 $cell = $cell instanceof TableCell ? new TableCell($escaped, ['colspan' => $cell->getColspan()]) : $escaped;
                 $lines = explode("\n", str_replace("\n", "<fg=default;bg=default></>\n", $cell));
                 foreach ($lines as $lineKey => $line) {

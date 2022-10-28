@@ -63,6 +63,7 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
+use PHPUnit\Util\Xml\XmlException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -99,6 +100,9 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
+    /**
+     * @throws ExpectationFailedException
+     */
     final public static function assertIsList(array $array, string $message = ''): void
     {
         static::assertThat(
@@ -121,6 +125,9 @@ abstract class Assert
         static::assertThat($haystack, $constraint, $message);
     }
 
+    /**
+     * @throws ExpectationFailedException
+     */
     final public static function assertContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
     {
         $constraint = new TraversableContainsEqual($needle);
@@ -143,6 +150,9 @@ abstract class Assert
         static::assertThat($haystack, $constraint, $message);
     }
 
+    /**
+     * @throws ExpectationFailedException
+     */
     final public static function assertNotContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
     {
         $constraint = new LogicalNot(new TraversableContainsEqual($needle));
@@ -153,6 +163,7 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
@@ -174,6 +185,7 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertContainsOnlyInstancesOf(string $className, iterable $haystack, string $message = ''): void
@@ -191,6 +203,7 @@ abstract class Assert
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
@@ -1004,6 +1017,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type array.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert array $actual
@@ -1020,6 +1034,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type bool.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert bool $actual
@@ -1036,6 +1051,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type float.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert float $actual
@@ -1052,6 +1068,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type int.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert int $actual
@@ -1068,6 +1085,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type numeric.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert numeric $actual
@@ -1084,6 +1102,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type object.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert object $actual
@@ -1100,6 +1119,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type resource.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert resource $actual
@@ -1116,6 +1136,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type resource and is closed.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert resource $actual
@@ -1132,6 +1153,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type string.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert string $actual
@@ -1148,6 +1170,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type scalar.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert scalar $actual
@@ -1164,6 +1187,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type callable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert callable $actual
@@ -1180,6 +1204,7 @@ abstract class Assert
     /**
      * Asserts that a variable is of type iterable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert iterable $actual
@@ -1196,6 +1221,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type array.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !array $actual
@@ -1212,6 +1238,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type bool.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !bool $actual
@@ -1228,6 +1255,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type float.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !float $actual
@@ -1244,6 +1272,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type int.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !int $actual
@@ -1260,6 +1289,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type numeric.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !numeric $actual
@@ -1276,6 +1306,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type object.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !object $actual
@@ -1292,6 +1323,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type resource.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !resource $actual
@@ -1308,6 +1340,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type resource.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !resource $actual
@@ -1324,6 +1357,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type string.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !string $actual
@@ -1340,6 +1374,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type scalar.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !scalar $actual
@@ -1356,6 +1391,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type callable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !callable $actual
@@ -1372,6 +1408,7 @@ abstract class Assert
     /**
      * Asserts that a variable is not of type iterable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !iterable $actual
@@ -1636,6 +1673,7 @@ abstract class Assert
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlFileEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
@@ -1662,8 +1700,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlStringEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
@@ -1676,8 +1714,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
@@ -1690,8 +1728,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlStringEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
@@ -1704,8 +1742,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlStringNotEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
@@ -1964,11 +2002,17 @@ abstract class Assert
         return new TraversableContainsIdentical($value);
     }
 
+    /**
+     * @throws Exception
+     */
     final public static function containsOnly(string $type): TraversableContainsOnly
     {
         return new TraversableContainsOnly($type);
     }
 
+    /**
+     * @throws Exception
+     */
     final public static function containsOnlyInstancesOf(string $className): TraversableContainsOnly
     {
         return new TraversableContainsOnly($className, false);
@@ -2052,6 +2096,9 @@ abstract class Assert
         return new IsInstanceOf($className);
     }
 
+    /**
+     * @throws Exception
+     */
     final public static function isType(string $type): IsType
     {
         return new IsType($type);
