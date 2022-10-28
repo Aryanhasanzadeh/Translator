@@ -4,6 +4,7 @@ namespace Aryanhasanzadeh\Translator\App\Models\Repository;
 
 use Aryanhasanzadeh\Translator\App\Jobs\DoTranslateJob;
 use Aryanhasanzadeh\Translator\App\Models\Translate;
+use Aryanhasanzadeh\Translator\Helper\SingleTon\GetTranslator;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -69,8 +70,16 @@ class TranslateRepository{
             );
 
         }else{
+            $x = GetTranslator::getInstance(config('Translator.active_server'));
             foreach (config('Translator.fallback_locale') as $lang) {
-                dispatch((new DoTranslateJob($lang,$this->data,$this->type,$this->parent))->delay(2));
+                $this->parent->translate()->updateOrCreate(
+                    [
+                        'lang'=>$lang,
+                        'type'=>$this->type,
+                        'data'=>$x->setTarget($lang)->getTranslate($this->data)
+                    ]
+                );
+                // dispatch((new DoTranslateJob($lang,$this->data,$this->type,$this->parent))->delay(2));
             }
         }
         return ;
