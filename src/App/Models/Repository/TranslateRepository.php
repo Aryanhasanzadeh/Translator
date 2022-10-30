@@ -14,6 +14,7 @@ class TranslateRepository{
     protected $lang='';
     protected $type='';
     protected $data='';
+    protected $src='';
     protected $parent;
     protected $translate=null;
     protected $useTranslator=false;
@@ -37,6 +38,12 @@ class TranslateRepository{
     public function setType(String $type)
     {
         $this->type=$type;
+        return $this;
+    }
+
+    public function setSource(String $src)
+    {
+        $this->src = $src;
         return $this;
     }
     
@@ -70,7 +77,7 @@ class TranslateRepository{
             );
 
         }else{
-            $x = GetTranslator::getInstance(config('Translator.active_server'));
+            $x = GetTranslator::getInstance(config('Translator.active_server'))->setSource($this->src);
             foreach (config('Translator.fallback_locale') as $lang) {
                 $this->parent->translate()->updateOrCreate(
                     [
