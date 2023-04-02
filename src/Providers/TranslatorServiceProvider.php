@@ -9,6 +9,8 @@ class TranslatorServiceProvider extends ServiceProvider {
 
     public function boot()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/Translator.php', 'Translator');
+
         $this->publish();
 
         $this->loadRoutesFrom(__DIR__.'/../App/Http/routes/api.php');
@@ -21,7 +23,6 @@ class TranslatorServiceProvider extends ServiceProvider {
     
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/translator.php', 'Translator');
     }
 
 

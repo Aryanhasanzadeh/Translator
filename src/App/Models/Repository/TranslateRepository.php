@@ -14,7 +14,6 @@ class TranslateRepository{
     protected $lang='';
     protected $type='';
     protected $data='';
-    protected $src='';
     protected $parent;
     protected $translate=null;
     protected $useTranslator=false;
@@ -40,12 +39,6 @@ class TranslateRepository{
         $this->type=$type;
         return $this;
     }
-
-    public function setSource(String $src)
-    {
-        $this->src = $src;
-        return $this;
-    }
     
     public function setData(String $data)
     {
@@ -59,13 +52,38 @@ class TranslateRepository{
         return $this;
     }
 
+
+    public function find(string $parentType, string $find)
+    {
+        $this->checkLang();
+
+        return Translate::where('to_type', $parentType)
+            ->where('lang', $this->lang)
+            ->where('data', 'like','%'.$find.'%')
+            ->get();
+    }
+
+    public function checkParent()
+    {
+        if(!$this->parent instanceof Model){
+            throw new Exception("parent not set", 1);
+        }
+    }
+    
+    public function checkLang()
+    {
+        if(empty($this->lang)){
+            throw new Exception("language not set", 1);
+        }
+    }
+
     public function manageUpdateOrInsert()
     {
         $this->checkLocaleArray();
 
-        if(!$this->parent instanceof Model){
-            throw new Exception("parent not set", 1);
-        }
+        $this->checkParent();
+
+        $this->checkLang();
 
         if (!$this->useTranslator) {
             $x = $this->parent->translate()->updateOrCreate(
@@ -75,18 +93,21 @@ class TranslateRepository{
                     'data'=>$this->data
                 ]
             );
-
         }else{
-            $x = GetTranslator::getInstance(config('Translator.active_server'))->setSource($this->src);
+            $TranslateManager = GetTranslator::getInstance(config('Translator.active_server'))
+                ->setSource($this->lang);
             foreach (config('Translator.fallback_locale') as $lang) {
+                // dd($TranslateManager->setTarget($lang)->getTranslate($this->data));
+                // dispatch((new DoTranslateJob($lang,$this->data,$this->type,$this->parent))->delay(2));
                 $this->parent->translate()->updateOrCreate(
                     [
                         'lang'=>$lang,
                         'type'=>$this->type,
-                        'data'=>$x->setTarget($lang)->getTranslate($this->data)
+                    ],
+                    [
+                        'data'=>$TranslateManager->setTarget($lang)->getTranslate($this->data)
                     ]
                 );
-                // dispatch((new DoTranslateJob($lang,$this->data,$this->type,$this->parent))->delay(2));
             }
         }
         return ;

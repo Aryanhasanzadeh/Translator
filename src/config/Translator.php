@@ -3,7 +3,7 @@
 
 return [
     
-    'fallback_locale'=>['en','fa','hi','ar','de','it','ja','az','la','fr','sv','zh-TW'],
+    'fallback_locale'=>['en','fa','ar','de','az','fr','tr'],
 
     'active_server'=>'google',
 
